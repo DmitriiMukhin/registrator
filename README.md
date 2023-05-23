@@ -1,44 +1,43 @@
-# Registrator
+# Registrator (With Network priority)
 
-Service registry bridge for Docker.
+I added to the "registrator" the ability to select **docker networks name** or **subnetwork** has been prioritized in the tools.
 
-[![Circle CI](https://circleci.com/gh/gliderlabs/registrator.png?style=shield)](https://circleci.com/gh/gliderlabs/registrator)
-[![Docker pulls](https://img.shields.io/docker/pulls/gliderlabs/registrator.svg)](https://hub.docker.com/r/gliderlabs/registrator/)
-[![IRC Channel](https://img.shields.io/badge/irc-%23gliderlabs-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#gliderlabs)
-<br /><br />
+Under certain conditions and it does not matter the order of the Docker network, the eth0 card is not reassembled as the first network. This creates a problem with Consul's healthcheck, for example, where the IP address Consul used is unreachable by Consul.
 
-Registrator automatically registers and deregisters services for any Docker
-container by inspecting containers as they come online. Registrator
-supports pluggable service registries, which currently includes
-[Consul](http://www.consul.io/), [etcd](https://github.com/coreos/etcd) and
-[SkyDNS 2](https://github.com/skynetservices/skydns/).
+This therefore allows you to have several networks identified in your container but to prioritize the one you want.
 
-Full documentation available at http://gliderlabs.com/registrator
+In the event that no IP is found in the list of defined networks, registrator will show the first IP (standard operation).
 
-## Getting Registrator
+## Source
+https://gitlab.com/dkr-registrator/registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/gliderlabs/registrator/):
+## Fork of
+https://github.com/gliderlabs/registrator
 
-	$ docker pull gliderlabs/registrator:latest
+# Docker
+Docker page: https://hub.docker.com/r/hypolas/registrator
 
-Latest tag always points to the latest release. There is also a `:master` tag
-and version tags to pin to specific releases.
+Docker pull: hypolas/registrator
 
-## Using Registrator
+Pull command: docker pull hypolas/registrator
 
-The quickest way to see Registrator in action is our
-[Quickstart](https://gliderlabs.com/registrator/latest/user/quickstart)
-tutorial. Otherwise, jump to the [Run
-Reference](https://gliderlabs.com/registrator/latest/user/run) in the User
-Guide. Typically, running Registrator looks like this:
 
-    $ docker run -d \
-        --name=registrator \
-        --net=host \
-        --volume=/var/run/docker.sock:/tmp/docker.sock \
-        gliderlabs/registrator:latest \
-          consul://localhost:8500
+```docker-compose.yml```:
+```yaml
+version: '3.8'
 
+services:
+  registrator:
+    image: hypolas/registrator:latest
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    command: -internal -cleanup -resync 10 -networks-priority "10.10.0.0/16" consul://consul:8500
+```
+
+# Result
+![registrator](docs/images/registrator.gif)
+
+# How to use
 ## CLI Options
 ```
 Usage of /bin/registrator:
@@ -54,29 +53,26 @@ Usage of /bin/registrator:
   -tags="": Append tags for all registered services
   -ttl=0: TTL for services (default is no expiry)
   -ttl-refresh=0: Frequency with which service TTLs are refreshed
+  -networks-priority="": If containers have multi networks, you can specified witch network used (in -internal mode). Comma separator
 ```
 
-## Contributing
+## You are here for this option
+```
+-networks-priority=""
+```
 
-Pull requests are welcome! We recommend getting feedback before starting by
-opening a [GitHub issue](https://github.com/gliderlabs/registrator/issues) or
-discussing in [Slack](http://glider-slackin.herokuapp.com/).
+## Exemple
+```
+-internal -cleanup -resync 10 -networks-priority "10.10.0.0/16,my_docker_network_name,10.1.1.0/24" consul://consul:8500
+```
 
-Also check out our Developer Guide on [Contributing
-Backends](https://gliderlabs.com/registrator/latest/dev/backends) and [Staging
-Releases](https://gliderlabs.com/registrator/latest/dev/releases).
-
-## Sponsors and Thanks
-
-Big thanks to Weave for sponsoring, Michael Crosby for
-[skydock](https://github.com/crosbymichael/skydock), and the Consul mailing list
-for inspiration.
-
-For a full list of sponsors, see
-[SPONSORS](https://github.com/gliderlabs/registrator/blob/master/SPONSORS).
+# Differences with fork
+- Update Alpine to recent build.
+- Remove all locked dependecies (must be compatible with more recent tools. Not tested for all).
+- Split packages to real Go modules.
 
 ## License
 
 MIT
 
-<img src="https://ga-beacon.appspot.com/UA-58928488-2/registrator/readme?pixel" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/License_icon-mit.svg/256px-License_icon-mit.svg.png" />

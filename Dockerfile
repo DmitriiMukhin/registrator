@@ -1,18 +1,23 @@
-FROM golang:1.9.4-alpine3.7 AS builder
-WORKDIR /go/src/github.com/gliderlabs/registrator/
-COPY . .
-RUN \
-	apk add --no-cache curl git \
-	&& curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
-	&& dep ensure -vendor-only \
-	&& CGO_ENABLED=0 GOOS=linux go build \
-		-a -installsuffix cgo \
-		-ldflags "-X main.Version=$(cat VERSION)" \
-		-o bin/registrator \
-		.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE} AS init
 
-FROM alpine:3.7
-RUN apk add --no-cache ca-certificates
-COPY --from=builder /go/src/github.com/gliderlabs/registrator/bin/registrator /bin/registrator
+ARG BASE_IMAGE
+ARG BUILD_DATE
+ARG VERSION
+
+LABEL version="v1.0.0"
+LABEL description="Fork of Docker registrator with networks priority."
+LABEL org.label-schema.build-date=${BUILD_DATE} \
+    org.label-schema.version=${VERSION} \
+    org.label-schema.vcs-url="https://gitlab.com/dkr-registrator/registrator" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.title="registrator" \
+    org.opencontainers.image.vendor="hypolas" \
+    license="MIT"
+LABEL maintainer="nicolas.hypolite@gmail.com"
+
+RUN find / -name proxy
+RUN --mount=type=secret,id=proxy HTTP_PROXY=$(cat /run/secrets/proxy) HTTPS_PROXY=$(cat /run/secrets/proxy) apk add --no-cache ca-certificates
+COPY build/registrator /bin/registrator
 
 ENTRYPOINT ["/bin/registrator"]

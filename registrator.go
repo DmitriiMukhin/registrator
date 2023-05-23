@@ -12,25 +12,31 @@ import (
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 	"github.com/gliderlabs/pkg/usage"
-	"github.com/gliderlabs/registrator/bridge"
+	"gitlab.com/dkr-registrator/bridge"
 )
 
 var Version string
 
-var versionChecker = usage.NewChecker("registrator", Version)
+var (
+	versionChecker = usage.NewChecker("registrator", Version)
+	nFilter        = []string{}
+)
 
-var hostIp = flag.String("ip", "", "IP for ports mapped to the host")
-var internal = flag.Bool("internal", false, "Use internal ports instead of published ones")
-var explicit = flag.Bool("explicit", false, "Only register containers which have SERVICE_NAME label set")
-var useIpFromLabel = flag.String("useIpFromLabel", "", "Use IP which is stored in a label assigned to the container")
-var refreshInterval = flag.Int("ttl-refresh", 0, "Frequency with which service TTLs are refreshed")
-var refreshTtl = flag.Int("ttl", 0, "TTL for services (default is no expiry)")
-var forceTags = flag.String("tags", "", "Append tags for all registered services")
-var resyncInterval = flag.Int("resync", 0, "Frequency with which services are resynchronized")
-var deregister = flag.String("deregister", "always", "Deregister exited services \"always\" or \"on-success\"")
-var retryAttempts = flag.Int("retry-attempts", 0, "Max retry attempts to establish a connection with the backend. Use -1 for infinite retries")
-var retryInterval = flag.Int("retry-interval", 2000, "Interval (in millisecond) between retry-attempts.")
-var cleanup = flag.Bool("cleanup", false, "Remove dangling services")
+var (
+	hostIp           = flag.String("ip", "", "IP for ports mapped to the host")
+	internal         = flag.Bool("internal", false, "Use internal ports instead of published ones")
+	networksPriority = flag.String("networks-priority", "", "If containers have multi networks, you can specified witch network used (in -internal mode)")
+	explicit         = flag.Bool("explicit", false, "Only register containers which have SERVICE_NAME label set")
+	useIpFromLabel   = flag.String("useIpFromLabel", "", "Use IP which is stored in a label assigned to the container")
+	refreshInterval  = flag.Int("ttl-refresh", 0, "Frequency with which service TTLs are refreshed")
+	refreshTtl       = flag.Int("ttl", 0, "TTL for services (default is no expiry)")
+	forceTags        = flag.String("tags", "", "Append tags for all registered services")
+	resyncInterval   = flag.Int("resync", 0, "Frequency with which services are resynchronized")
+	deregister       = flag.String("deregister", "always", "Deregister exited services \"always\" or \"on-success\"")
+	retryAttempts    = flag.Int("retry-attempts", 0, "Max retry attempts to establish a connection with the backend. Use -1 for infinite retries")
+	retryInterval    = flag.Int("retry-interval", 2000, "Interval (in millisecond) between retry-attempts.")
+	cleanup          = flag.Bool("cleanup", false, "Remove dangling services")
+)
 
 func getopt(name, def string) string {
 	if env := os.Getenv(name); env != "" {
@@ -76,6 +82,10 @@ func main() {
 		log.Println("Forcing host IP to", *hostIp)
 	}
 
+	if *networksPriority != "" {
+		nFilter = strings.Split(*networksPriority, ",")
+	}
+
 	if (*refreshTtl == 0 && *refreshInterval > 0) || (*refreshTtl > 0 && *refreshInterval == 0) {
 		assert(errors.New("-ttl and -ttl-refresh must be specified together or not at all"))
 	} else if *refreshTtl > 0 && *refreshTtl <= *refreshInterval {
@@ -103,15 +113,16 @@ func main() {
 	}
 
 	b, err := bridge.New(docker, flag.Arg(0), bridge.Config{
-		HostIp:          *hostIp,
-		Internal:        *internal,
-		Explicit:        *explicit,
-		UseIpFromLabel:  *useIpFromLabel,
-		ForceTags:       *forceTags,
-		RefreshTtl:      *refreshTtl,
-		RefreshInterval: *refreshInterval,
-		DeregisterCheck: *deregister,
-		Cleanup:         *cleanup,
+		HostIp:           *hostIp,
+		Internal:         *internal,
+		Explicit:         *explicit,
+		UseIpFromLabel:   *useIpFromLabel,
+		ForceTags:        *forceTags,
+		RefreshTtl:       *refreshTtl,
+		RefreshInterval:  *refreshInterval,
+		DeregisterCheck:  *deregister,
+		Cleanup:          *cleanup,
+		NetworksPriority: nFilter,
 	})
 
 	assert(err)

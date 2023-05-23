@@ -1,9 +1,9 @@
 package main
 
 import (
-	_ "github.com/gliderlabs/registrator/consul"
-	_ "github.com/gliderlabs/registrator/consulkv"
-	_ "github.com/gliderlabs/registrator/etcd"
-	_ "github.com/gliderlabs/registrator/skydns2"
-	_ "github.com/gliderlabs/registrator/zookeeper"
+	_ "gitlab.com/dkr-registrator/consul"
+	_ "gitlab.com/dkr-registrator/consulkv"
+	_ "gitlab.com/dkr-registrator/etcd"
+	_ "gitlab.com/dkr-registrator/skydns2"
+	_ "gitlab.com/dkr-registrator/zookeeper"
 )
