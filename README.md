@@ -61,9 +61,29 @@ Usage of /bin/registrator:
 -networks-priority=""
 ```
 
-## Exemple
+# Examples
+## Command line for global consiguration.
 ```
 -internal -cleanup -resync 10 -networks-priority "10.10.0.0/16,my_docker_network_name,10.1.1.0/24" consul://consul:8500
+```
+## Environnement variables for specifics container configuration.
+```yml
+version: '3.8'
+
+services:
+  test:
+    image: sverrirab/sleep
+    networks:
+      - ipam50
+      - ipam51
+      - ipam52
+      - ipamX
+   environment:
+      SERVICE_NAME: test
+      SERVICE_NETWORKS_PRIORITY: ipamX
+      SERVICE_50_NETWORKS_PRIORITY: ipam50
+      SERVICE_51_NETWORKS_PRIORITY: ipam51
+      SERVICE_52_NETWORKS_PRIORITY: 10.52.0.0/16
 ```
 
 # Differences with fork
