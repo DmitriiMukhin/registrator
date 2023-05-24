@@ -3,7 +3,6 @@ module registrator
 go 1.20
 
 require (
-	github.com/docker/docker v24.0.1+incompatible
 	github.com/moby/moby v24.0.1+incompatible
 	gitlab.com/dkr-registrator/bridge v0.0.4
 	gitlab.com/dkr-registrator/consul v0.0.4
@@ -21,6 +20,7 @@ require (
 	github.com/containerd/containerd v1.7.1 // indirect
 	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
 	github.com/docker/distribution v2.8.2+incompatible // indirect
+	github.com/docker/docker v24.0.1+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/fatih/color v1.15.0 // indirect
