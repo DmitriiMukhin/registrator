@@ -11,15 +11,13 @@ import (
 	"time"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
-	"github.com/gliderlabs/pkg/usage"
 	"gitlab.com/dkr-registrator/bridge"
 )
 
 var Version string
 
 var (
-	versionChecker = usage.NewChecker("registrator", Version)
-	nFilter        = []string{}
+	nFilter = []string{}
 )
 
 var (
@@ -36,6 +34,7 @@ var (
 	retryAttempts    = flag.Int("retry-attempts", 0, "Max retry attempts to establish a connection with the backend. Use -1 for infinite retries")
 	retryInterval    = flag.Int("retry-interval", 2000, "Interval (in millisecond) between retry-attempts.")
 	cleanup          = flag.Bool("cleanup", false, "Remove dangling services")
+	version          = flag.Bool("version", false, "Print application version")
 )
 
 func getopt(name, def string) string {
@@ -52,19 +51,18 @@ func assert(err error) {
 }
 
 func main() {
-	if len(os.Args) == 2 && os.Args[1] == "--version" {
-		versionChecker.PrintVersion()
-		os.Exit(0)
-	}
-	log.Printf("Starting registrator %s ...", Version)
-
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "  %s [options] <registry URI>\n\n", os.Args[0])
 		flag.PrintDefaults()
 	}
-
 	flag.Parse()
+
+	if len(os.Args) == 2 && os.Args[1] == "--version" || *version {
+		fmt.Println("Version:\t", Version)
+		os.Exit(0)
+	}
+	log.Printf("Starting registrator %s ...", Version)
 
 	if flag.NArg() != 1 {
 		if flag.NArg() == 0 {
