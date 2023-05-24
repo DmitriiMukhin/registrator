@@ -17,13 +17,9 @@ import (
 	"github.com/moby/moby/client"
 )
 
-var Version string
-
 var (
-	nFilter = []string{}
-)
-
-var (
+	Version          string
+	nFilter          = []string{}
 	hostIp           = flag.String("ip", "", "IP for ports mapped to the host")
 	internal         = flag.Bool("internal", false, "Use internal ports instead of published ones")
 	networksPriority = flag.String("networks-priority", "", "If containers have multi networks, you can specified witch network used (in -internal mode)")
