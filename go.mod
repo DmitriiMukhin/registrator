@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/fsouza/go-dockerclient v1.9.7
-	github.com/gliderlabs/pkg v0.0.0-20161206023812-36f28d47ec7a
+	github.com/moby/moby v24.0.1+incompatible
 	gitlab.com/dkr-registrator/bridge v0.0.4
 	gitlab.com/dkr-registrator/consul v0.0.4
 	gitlab.com/dkr-registrator/consulkv v0.0.5
@@ -20,6 +20,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/containerd/containerd v1.7.1 // indirect
 	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
+	github.com/docker/distribution v2.8.2+incompatible // indirect
 	github.com/docker/docker v24.0.1+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -35,7 +36,6 @@ require (
 	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/miekg/dns v1.1.54 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/moby/patternmatcher v0.5.0 // indirect
