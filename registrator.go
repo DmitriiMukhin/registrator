@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -10,8 +11,10 @@ import (
 	"strings"
 	"time"
 
-	dockerapi "github.com/fsouza/go-dockerclient"
 	"gitlab.com/dkr-registrator/bridge"
+
+	"github.com/docker/docker/api/types"
+	"github.com/moby/moby/client"
 )
 
 var Version string
@@ -103,8 +106,10 @@ func main() {
 		}
 	}
 
-	docker, err := dockerapi.NewClientFromEnv()
-	assert(err)
+	docker, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		panic(err)
+	}
 
 	if *deregister != "always" && *deregister != "on-success" {
 		assert(errors.New("-deregister must be \"always\" or \"on-success\""))
@@ -143,8 +148,7 @@ func main() {
 	}
 
 	// Start event listener before listing containers to avoid missing anything
-	events := make(chan *dockerapi.APIEvents)
-	assert(docker.AddEventListener(events))
+	events, _ := docker.Events(context.Background(), types.EventsOptions{})
 	log.Println("Listening for Docker events ...")
 
 	b.Sync(false)
