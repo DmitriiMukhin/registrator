@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	github.com/docker/docker v24.0.1+incompatible
-	github.com/fsouza/go-dockerclient v1.9.7
 	github.com/moby/moby v24.0.1+incompatible
 	gitlab.com/dkr-registrator/bridge v0.0.4
 	gitlab.com/dkr-registrator/consul v0.0.4
@@ -25,6 +24,7 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/fatih/color v1.15.0 // indirect
+	github.com/fsouza/go-dockerclient v1.9.7 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/hashicorp/consul/api v1.20.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
