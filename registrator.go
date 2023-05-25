@@ -10,17 +10,15 @@ import (
 	"strings"
 	"time"
 
-	dockerapi "github.com/fsouza/go-dockerclient"
 	"gitlab.com/dkr-registrator/bridge"
-)
 
-var Version string
-
-var (
-	nFilter = []string{}
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 )
 
 var (
+	Version          string
+	nFilter          = []string{}
 	hostIp           = flag.String("ip", "", "IP for ports mapped to the host")
 	internal         = flag.Bool("internal", false, "Use internal ports instead of published ones")
 	networksPriority = flag.String("networks-priority", "", "If containers have multi networks, you can specified witch network used (in -internal mode)")
@@ -103,8 +101,10 @@ func main() {
 		}
 	}
 
-	docker, err := dockerapi.NewClientFromEnv()
-	assert(err)
+	docker, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		panic(err)
+	}
 
 	if *deregister != "always" && *deregister != "on-success" {
 		assert(errors.New("-deregister must be \"always\" or \"on-success\""))
@@ -143,8 +143,7 @@ func main() {
 	}
 
 	// Start event listener before listing containers to avoid missing anything
-	events := make(chan *dockerapi.APIEvents)
-	assert(docker.AddEventListener(events))
+	events, _ := docker.Events(b.Ctx, types.EventsOptions{})
 	log.Println("Listening for Docker events ...")
 
 	b.Sync(false)
