@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -13,8 +12,8 @@ import (
 
 	"gitlab.com/dkr-registrator/bridge"
 
-	"github.com/moby/moby/api/types"
-	"github.com/moby/moby/client"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 )
 
 var (
@@ -144,7 +143,7 @@ func main() {
 	}
 
 	// Start event listener before listing containers to avoid missing anything
-	events, _ := docker.Events(context.Background(), types.EventsOptions{})
+	events, _ := docker.Events(b.Ctx, types.EventsOptions{})
 	log.Println("Listening for Docker events ...")
 
 	b.Sync(false)
