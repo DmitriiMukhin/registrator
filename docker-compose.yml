@@ -22,10 +22,10 @@ services:
       context: .
       args:
         BASE_IMAGE: ${BASE_IMAGE}
-        VERSION: ${VERSION}
+        VERSION: ${APPLICATION_VERSION}
       secrets:
         - proxy
-    image: ${IMAGE}
+    image: ${IMAGE}:${APPLICATION_VERSION}
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     command: -internal -cleanup -resync 10 -networks-priority "10.10.0.0/16" consul://consul:8500

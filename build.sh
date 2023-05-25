@@ -1,8 +1,10 @@
 export BUILDKIT_PROGRESS=plain
+export APPLICATION_VERSION=$(cat VERSION)
 CGO_ENABLED=0 GOOS=linux go build \
 	-a -installsuffix cgo \
 	-trimpath \
 	-ldflags "-w -s" \
+	-ldflags="-X 'main.Version=${APPLICATION_VERSION}'" \
 	-o build/registrator .
 # docker-compose up --force-recreate --build registrator
 docker-compose up -d consul

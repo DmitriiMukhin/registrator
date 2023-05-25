@@ -5,7 +5,7 @@ ARG BASE_IMAGE
 ARG BUILD_DATE
 ARG VERSION
 
-LABEL version="v1.0.0"
+LABEL version="${VERSION}"
 LABEL description="Fork of Docker registrator with networks priority."
 LABEL org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.version=${VERSION} \

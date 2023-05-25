@@ -15,12 +15,16 @@ https://gitlab.com/dkr-registrator/registrator
 https://github.com/gliderlabs/registrator
 
 # Docker
-Docker page: https://hub.docker.com/r/hypolas/registrator
+- Docker page => https://hub.docker.com/r/hypolas/registrator
+- Docker pull => hypolas/registrator
+- Pull command  => docker pull hypolas/registrator
 
-Docker pull: hypolas/registrator
-
-Pull command: docker pull hypolas/registrator
-
+# Biggest changes
+- Removed module **"github.com/fsouza/go-dockerclient"** and using Official Docker SDK **"github.com/docker/docker"** !
+- Selected **network by name** or **subnetwork** !
+- Update **Alpine to recent build** !
+- Remove all locked dependecies (must be compatible with more recent tools. Not tested for all). Using go.mod.
+- Split packages to real Go modules.
 
 ```docker-compose.yml```:
 ```yaml
@@ -85,11 +89,6 @@ services:
       SERVICE_51_NETWORKS_PRIORITY: ipam51
       SERVICE_52_NETWORKS_PRIORITY: 10.52.0.0/16
 ```
-
-# Differences with fork
-- Update Alpine to recent build.
-- Remove all locked dependecies (must be compatible with more recent tools. Not tested for all).
-- Split packages to real Go modules.
 
 ## License
 
