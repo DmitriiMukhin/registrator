@@ -10,7 +10,7 @@ services:
         ARCH: ${ARCH}
       secrets:
         - proxy
-    image: ${IMAGE}:${APPLICATION_VERSION}-${ARCH}
+    image: ${LOCAL_REGISTRY}/${IMAGE}:${APPLICATION_VERSION}-${ARCH}
 
 secrets:
   proxy:

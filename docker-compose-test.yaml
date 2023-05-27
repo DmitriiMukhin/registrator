@@ -10,6 +10,8 @@ services:
       - '8500:8500'
       - '8600:8600'
       - '8600:8600/udp'
+    networks:
+      - ipamX
     labels:
       SERVICE_IGNORE: "true"
       traefik.enable: "true"
@@ -18,14 +20,9 @@ services:
       traefik.http.routers.consul.tls: "true"
       traefik.http.services.consul_8500.loadbalancer.server.port: "8500"
   registrator:
-    build:
-      context: .
-      args:
-        BASE_IMAGE: ${BASE_IMAGE}
-        VERSION: ${APPLICATION_VERSION}
-      secrets:
-        - proxy
-    image: ${IMAGE}:${APPLICATION_VERSION}
+    image: hypolas/registrator
+    networks:
+      - ipamX
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     command: -internal -cleanup -resync 10 -networks-priority "10.10.0.0/16" consul://consul:8500
