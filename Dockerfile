@@ -1,7 +1,9 @@
+ARG ARCH
 ARG BASE_IMAGE
-FROM ${BASE_IMAGE} AS init
+FROM --platform=${ARCH} ${BASE_IMAGE}
 
-ARG BASE_IMAGE
+ARG BARCH
+ARG BOS
 ARG BUILD_DATE
 ARG VERSION
 
@@ -16,8 +18,9 @@ LABEL org.label-schema.build-date=${BUILD_DATE} \
     license="MIT"
 LABEL maintainer="nicolas.hypolite@gmail.com"
 
-RUN find / -name proxy
-RUN --mount=type=secret,id=proxy HTTP_PROXY=$(cat /run/secrets/proxy) HTTPS_PROXY=$(cat /run/secrets/proxy) apk add --no-cache ca-certificates
-COPY build/registrator /bin/registrator
+# RUN find / -name proxy
+RUN --mount=type=secret,id=proxy HTTP_PROXY= HTTPS_PROXY= apk add --no-cache ca-certificates
+# RUN --mount=type=secret,id=proxy HTTP_PROXY=$(cat /run/secrets/proxy) HTTPS_PROXY=$(cat /run/secrets/proxy) apk add --no-cache ca-certificates
+COPY bin/registrator-${BOS}-${BARCH} /bin/registrator
 
 ENTRYPOINT ["/bin/registrator"]

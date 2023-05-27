@@ -1,6 +1,7 @@
 .gvm_local
 .env
 .env.secret.*
-build
+build/*
 release
 vendor
+bin/*

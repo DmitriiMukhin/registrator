@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  consul:
+    image: bitnami/consul:latest
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+    networks:
+      - ipamX
+    labels:
+      SERVICE_IGNORE: "true"
+      traefik.enable: "true"
+      traefik.http.routers.consul.service: consul_8500
+      traefik.http.routers.consul.rule: HostRegexp(`{host:consul.*}`)
+      traefik.http.routers.consul.tls: "true"
+      traefik.http.services.consul_8500.loadbalancer.server.port: "8500"
+  registrator:
+    image: hypolas/registrator:latest
+    networks:
+      - ipamX
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: -internal -cleanup -resync 10 -networks-priority "10.10.0.0/16" consul://consul:8500
+  network-port-test:
+    image: sverrirab/sleep
+    networks:
+      - ipam50
+      - ipam51
+      - ipam52
+      - ipamX
+    expose:
+      - 20
+      - 50
+      - 51
+      - 52
+    environment:
+      SERVICE_NAME: test_ip
+      SERVICE_NETWORKS_PRIORITY: ipamX
+      SERVICE_50_NETWORKS_PRIORITY: ipam50
+      SERVICE_51_NETWORKS_PRIORITY: ipam51
+      SERVICE_52_NETWORKS_PRIORITY: 10.52.0.0/16
+
+networks:
+  ipamX:
+    name: ipamX
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/16
+          gateway: 10.20.0.1
+  ipam50:
+    name: ipam50
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.50.0.0/16
+          gateway: 10.50.0.1
+  ipam51:
+    name: ipam51
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.51.0.0/16
+          gateway: 10.51.0.1
+  ipam52:
+    name: ipam52
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.52.0.0/16
+          gateway: 10.52.0.1
