@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -102,6 +103,7 @@ func main() {
 	}
 
 	docker, err := client.NewClientWithOpts(client.FromEnv)
+	docker.NegotiateAPIVersion(context.Background())
 	if err != nil {
 		panic(err)
 	}

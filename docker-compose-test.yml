@@ -20,7 +20,7 @@ services:
       traefik.http.routers.consul.tls: "true"
       traefik.http.services.consul_8500.loadbalancer.server.port: "8500"
   registrator:
-    image: hypolas/registrator
+    image: hypolas/registrator:latest
     networks:
       - ipamX
     volumes:
@@ -45,9 +45,6 @@ services:
       SERVICE_51_NETWORKS_PRIORITY: ipam51
       SERVICE_52_NETWORKS_PRIORITY: 10.52.0.0/16
 
-secrets:
-  proxy:
-    file: ./.env.secret.proxy
 networks:
   ipamX:
     name: ipamX
