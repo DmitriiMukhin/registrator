@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/docker/docker v24.0.2+incompatible
-	gitlab.com/dkr-registrator/bridge v0.0.6
+	gitlab.com/dkr-registrator/bridge v0.0.10
 	gitlab.com/dkr-registrator/consul v0.0.4
 	gitlab.com/dkr-registrator/consulkv v0.0.5
 	gitlab.com/dkr-registrator/etcd v0.0.4

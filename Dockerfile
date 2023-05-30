@@ -19,8 +19,8 @@ LABEL org.label-schema.build-date=${BUILD_DATE} \
 LABEL maintainer="nicolas.hypolite@gmail.com"
 
 # RUN find / -name proxy
-RUN --mount=type=secret,id=proxy HTTP_PROXY= HTTPS_PROXY= apk add --no-cache ca-certificates
-# RUN --mount=type=secret,id=proxy HTTP_PROXY=$(cat /run/secrets/proxy) HTTPS_PROXY=$(cat /run/secrets/proxy) apk add --no-cache ca-certificates
+# RUN --mount=type=secret,id=proxy HTTP_PROXY= HTTPS_PROXY= apk add --no-cache ca-certificates
+RUN --mount=type=secret,id=proxy HTTP_PROXY=$(cat /run/secrets/proxy) HTTPS_PROXY=$(cat /run/secrets/proxy) apk add --no-cache ca-certificates
 COPY bin/registrator-${BOS}-${BARCH} /bin/registrator
 
 ENTRYPOINT ["/bin/registrator"]

@@ -1,5 +1,6 @@
 # export DOCKER_BUILDKIT=0
 # export COMPOSE_DOCKER_CLI_BUILD=0
+# BuildKit create: docker buildx create --use --driver-opt env.http_proxy=$(cat .env.secret.proxy) --driver-opt env.https_proxy=$(cat .env.secret.proxy) --driver-opt '"env.no_proxy='$no_proxy'"'
 export APPLICATION_VERSION=$(cat VERSION)
 export BUILD_GOOS="linux"
 export BUILD_ARCH="386 amd64 arm arm64"
@@ -7,6 +8,8 @@ export BASE_IMAGE=alpine:3.18.0
 export LOCAL_REGISTRY=docker.io
 export DOCKER_REGISTRY=docker.io
 export IMAGE=hypolas/registrator
+export HTTP_PROXY=$(cat .env.secret.proxy)
+export HTTPS_PROXY=$(cat .env.secret.proxy)
 AMEND_IMAGE=""
 for BOS in ${BUILD_GOOS}
 do
@@ -31,13 +34,13 @@ do
 		--build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 		--build-arg BARCH=${BARCH} \
 		--build-arg BOS=${BOS}
-		docker push "${LOCAL_REGISTRY}/${IMAGE}:${APPLICATION_VERSION}-${BARCH}"
+		# docker push "${LOCAL_REGISTRY}/${IMAGE}:${APPLICATION_VERSION}-${BARCH}"
 	done
 done
 
-echo docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION} ${AMEND_IMAGE}
-docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION} ${AMEND_IMAGE}
-docker manifest push --purge ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION}
+# echo docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION} ${AMEND_IMAGE}
+# docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION} ${AMEND_IMAGE}
+# docker manifest push --purge ${DOCKER_REGISTRY}/${IMAGE}:${APPLICATION_VERSION}
 
-docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:latest ${AMEND_IMAGE}
-docker manifest push --purge ${DOCKER_REGISTRY}/${IMAGE}:latest
+# docker manifest create ${DOCKER_REGISTRY}/${IMAGE}:latest ${AMEND_IMAGE}
+# docker manifest push --purge ${DOCKER_REGISTRY}/${IMAGE}:latest

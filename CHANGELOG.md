@@ -1,14 +1,21 @@
 # Change Log
-All notable changes to this project will be documented in this file.
 
-## [Unreleased][unreleased]
+## [v1.1.1] - 2023-05-30
 ### Fixed
+- sha256 appear in service list in Swarm mode.
 
-### Added
+# Biggest changes v1.1.0
+- Removed module **"github.com/fsouza/go-dockerclient"** and using Official Docker SDK **"github.com/docker/docker"** !
+- Selected **network by name** or **subnetwork** !
+- Update **Alpine to recent build** !
+- Remove all locked dependecies (must be compatible with more recent tools. Not tested for all). Using go.mod.
+- Split packages to real Go modules.
 
-### Removed
-
-### Changed
+```
+##############
+HYPOLAS BUILD
+##############
+```
 
 ## [v7] - 2016-03-05
 ### Fixed

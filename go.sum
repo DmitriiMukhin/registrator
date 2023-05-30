@@ -197,6 +197,12 @@ gitlab.com/dkr-registrator/bridge v0.0.5 h1:8lDc3ImTehpV/Nw/X01aC6tKCOiRb9LZy1YD
 gitlab.com/dkr-registrator/bridge v0.0.5/go.mod h1:X5e+Ok/lLcxnexVJKS6FmVLRTyP1EY0nMU8yrIHm1ks=
 gitlab.com/dkr-registrator/bridge v0.0.6 h1:jWWr3Vef1PQ1yFxtbdNnWPLPgy/FwgJ2SF4Cgqbv2Cs=
 gitlab.com/dkr-registrator/bridge v0.0.6/go.mod h1:3ta/pijXVp9ETQy7395afPfEYwdlTD2qY1e7K+9SMJ0=
+gitlab.com/dkr-registrator/bridge v0.0.7 h1:BTudUEs/I98HArz/LUC5LBGZ2C1V1+HpK6wxnmIBKug=
+gitlab.com/dkr-registrator/bridge v0.0.7/go.mod h1:3ta/pijXVp9ETQy7395afPfEYwdlTD2qY1e7K+9SMJ0=
+gitlab.com/dkr-registrator/bridge v0.0.9 h1:82VfW0Vt0T/22Lszg8O6NE2AspXQ4w/gNqVoGebTsac=
+gitlab.com/dkr-registrator/bridge v0.0.9/go.mod h1:3ta/pijXVp9ETQy7395afPfEYwdlTD2qY1e7K+9SMJ0=
+gitlab.com/dkr-registrator/bridge v0.0.10 h1:Wyce4k977F32gX8+NwCmkdJJR4RcQBKqenvHaHiFsQ8=
+gitlab.com/dkr-registrator/bridge v0.0.10/go.mod h1:3ta/pijXVp9ETQy7395afPfEYwdlTD2qY1e7K+9SMJ0=
 gitlab.com/dkr-registrator/consul v0.0.4 h1:Hfd3+InFFoyfTwTNcIlEZfQgdKNRwiXiGAC+4uCFKgI=
 gitlab.com/dkr-registrator/consul v0.0.4/go.mod h1:sK007i4Yq2ERvUIymrwK53LOfzAMkNJb+MR3qwJ/dcc=
 gitlab.com/dkr-registrator/consulkv v0.0.5 h1:HL61n7+exX9m7b7cMVCcXr3wMWovBUPLx52IsRTshIc=
