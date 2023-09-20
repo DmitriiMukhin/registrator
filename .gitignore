@@ -1,6 +1,9 @@
+.env
+.env.secret.*
 .gvm_local
 .env
 .env.secret.*
 release
 vendor
 bin
+.idea
